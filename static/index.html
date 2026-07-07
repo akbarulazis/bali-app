@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pilih Basecamp · Bali 11–14 Juli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Airbnb tokens */
+  --canvas:#ffffff;--surface-soft:#f7f7f7;--surface-strong:#f2f2f2;
+  --hairline:#dddddd;--hairline-soft:#ebebeb;--border-strong:#c1c1c1;
+  --ink:#222222;--body:#3f3f3f;--muted:#6a6a6a;--muted-soft:#929292;
+  --rausch:#ff385c;--rausch-active:#e00b41;--rausch-disabled:#ffd1da;
+  --error:#c13515;--on-primary:#ffffff;
+  --sm:8px;--md:14px;--lg:24px;--xl:32px;--full:9999px;
+  --shadow:rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px 0, rgba(0,0,0,0.1) 0 4px 8px 0;
+  --shadow-lift:rgba(0,0,0,0.06) 0 0 0 1px, rgba(0,0,0,0.08) 0 6px 16px 0, rgba(0,0,0,0.12) 0 12px 28px 0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,system-ui,"Helvetica Neue",sans-serif;background:var(--canvas);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+button{font-family:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--rausch);color:#fff}
+
+/* ---------- top nav ---------- */
+.nav{position:sticky;top:0;z-index:50;background:var(--canvas);border-bottom:1px solid var(--hairline)}
+.nav-in{max-width:1280px;margin:0 auto;padding:0 40px;height:80px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:9px;color:var(--rausch);font-weight:700;font-size:22px;letter-spacing:-.02em;flex-shrink:0}
+.brand svg{width:30px;height:30px;flex-shrink:0}
+.nav-tabs{display:flex;gap:8px;align-items:center}
+.nav-tab{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--full);border:none;background:none;color:var(--muted);font-size:16px;font-weight:600;transition:background .18s,color .18s;position:relative}
+.nav-tab:hover{background:var(--surface-soft);color:var(--ink)}
+.nav-tab.active{color:var(--ink)}
+.nav-tab.active::after{content:"";position:absolute;left:14px;right:14px;bottom:2px;height:2px;background:var(--ink);border-radius:2px}
+.nav-tab . e{font-size:19px}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.editbtn{display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid var(--hairline);color:var(--ink);border-radius:var(--full);padding:9px 16px;font-weight:600;font-size:14px;transition:box-shadow .18s,border-color .18s}
+.editbtn:hover{box-shadow:var(--shadow);border-color:var(--border-strong)}
+.editbtn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.picksbtn{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid var(--hairline);color:var(--ink);border-radius:var(--full);padding:9px 16px;font-weight:600;font-size:14px;transition:box-shadow .18s;position:relative}
+.picksbtn:hover{box-shadow:var(--shadow)}
+.picksbtn .heart{color:var(--rausch)}
+.picksbtn .cnt{background:var(--rausch);color:#fff;border-radius:var(--full);font-size:12px;font-weight:700;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px}
+
+/* ---------- hero ---------- */
+.hero{padding:48px 0 8px}
+.hero .kicker{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:10px}
+.hero h1{font-size:28px;font-weight:700;line-height:1.2;letter-spacing:-.02em;max-width:760px}
+.hero h1 .r{color:var(--rausch)}
+.hero p{margin-top:14px;color:var(--body);font-size:16px;max-width:680px}
+.hero p b{color:var(--ink);font-weight:600}
+
+/* ---------- city selector (search-bar inspired) ---------- */
+.city-strip{display:flex;gap:14px;margin:26px 0 8px;flex-wrap:wrap}
+.city-pick{flex:1 1 220px;border:1px solid var(--hairline);border-radius:var(--md);background:var(--canvas);padding:18px 20px;text-align:left;transition:box-shadow .2s,border-color .2s,transform .2s;position:relative;overflow:hidden}
+.city-pick:hover{box-shadow:var(--shadow);border-color:var(--border-strong);transform:translateY(-2px)}
+.city-pick.active{border-color:var(--ink);box-shadow:var(--shadow)}
+.city-pick .emo{font-size:26px;display:block;margin-bottom:8px}
+.city-pick .opt{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rausch)}
+.city-pick .nm{font-size:20px;font-weight:600;letter-spacing:-.01em;margin-top:2px}
+.city-pick .tag{font-size:13px;color:var(--muted);margin-top:5px}
+.city-pick .lockbadge{position:absolute;top:14px;right:14px;font-size:11px;font-weight:700;color:var(--rausch);background:var(--rausch-disabled);padding:4px 9px;border-radius:var(--full);display:none}
+.city-pick.locked .lockbadge{display:block}
+
+/* ---------- lock banner ---------- */
+.lockbar{display:none;align-items:center;gap:14px;background:var(--surface-soft);border:1px solid var(--hairline);border-radius:var(--md);padding:14px 20px;margin:18px 0 4px}
+.lockbar.show{display:flex}
+.lockbar .lb-txt{flex:1;font-size:14.5px;color:var(--body)}
+.lockbar .lb-txt b{color:var(--ink);font-weight:700}
+.lockbar button{white-space:nowrap}
+.btn{border:none;border-radius:var(--sm);padding:11px 20px;font-weight:600;font-size:14px;transition:all .18s}
+.btn.primary{background:var(--rausch);color:#fff}
+.btn.primary:hover{background:var(--rausch-active)}
+.btn.outline{background:none;border:1px solid var(--ink);color:var(--ink)}
+.btn.outline:hover{background:var(--surface-soft)}
+
+/* ---------- city header ---------- */
+.city-head{margin-top:28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.city-head .big{font-size:40px}
+.city-head h2{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.city-head .lockcta{margin-left:auto}
+.city-intro{color:var(--body);font-size:16px;max-width:760px;margin:12px 0 16px}
+.city-intro b{color:var(--ink);font-weight:600}
+.verdict{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.v-chip{font-size:13px;font-weight:500;background:var(--surface-soft);border:1px solid var(--hairline);padding:8px 14px;border-radius:var(--full);color:var(--body)}
+
+/* ---------- theme filter (category strip) ---------- */
+.tfilter{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 8px;padding-bottom:16px;border-bottom:1px solid var(--hairline-soft)}
+.tf{border:1px solid var(--hairline);background:var(--canvas);color:var(--body);border-radius:var(--full);padding:9px 16px;font-size:14px;font-weight:500;transition:all .18s;display:inline-flex;align-items:center;gap:7px}
+.tf:hover{border-color:var(--ink);background:var(--surface-soft)}
+.tf.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tf .tcount{opacity:.6;font-weight:600}
+.tf.active .tcount{opacity:.8}
+
+/* ---------- day section ---------- */
+.day-sec{margin-top:40px}
+.day-div{display:flex;align-items:baseline;gap:12px;margin-bottom:20px}
+.day-div .dn{font-size:22px;font-weight:700;letter-spacing:-.01em}
+.day-div .dt{font-size:14px;font-weight:600;color:var(--muted)}
+.day-div .rule{flex:1;height:1px;background:var(--hairline-soft);align-self:center;margin-left:6px}
+.addbtn{border:1px solid var(--hairline);background:none;color:var(--ink);border-radius:var(--full);padding:8px 16px;font-size:13px;font-weight:600;white-space:nowrap;transition:box-shadow .18s;display:none}
+.addbtn:hover{box-shadow:var(--shadow);border-color:var(--border-strong)}
+body.editing .addbtn{display:inline-flex}
+
+/* ---------- cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.card{background:var(--canvas);border-radius:var(--md);cursor:pointer;transition:transform .2s;position:relative}
+.card:hover{transform:translateY(-3px)}
+.card:hover .thumb{box-shadow:var(--shadow-lift)}
+.thumb{border-radius:var(--md);overflow:hidden;position:relative;aspect-ratio:1/1;background:var(--surface-strong);display:flex;align-items:center;justify-content:center;transition:box-shadow .25s}
+.thumb .emoji-bg{font-size:72px;opacity:.9}
+.thumb.ph-alam{background:linear-gradient(135deg,#e8f5ee,#d3ecdd)}
+.thumb.ph-chill{background:linear-gradient(135deg,#e6f3fb,#d2e9f6)}
+.thumb.ph-kuliner{background:linear-gradient(135deg,#fdf2e0,#fae6c8)}
+.thumb.ph-budaya{background:linear-gradient(135deg,#f0eafa,#e3d7f5)}
+.thumb.ph-foto{background:linear-gradient(135deg,#fde8ef,#f9d3e0)}
+.thumb.ph-romantis{background:linear-gradient(135deg,#fde6ea,#f9d0d8)}
+.thumb img,.thumb video{width:100%;height:100%;object-fit:cover;display:block}
+.fav-btn{position:absolute;top:12px;right:12px;width:32px;height:32px;border:none;background:none;display:flex;align-items:center;justify-content:center;z-index:3;transition:transform .15s}
+.fav-btn:hover{transform:scale(1.12)}
+.fav-btn svg{width:24px;height:24px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+.fav-btn .hf{fill:rgba(0,0,0,.35);stroke:#fff;stroke-width:2}
+.fav-btn.on .hf{fill:var(--rausch);stroke:#fff}
+.gf-badge{position:absolute;top:12px;left:12px;background:var(--canvas);color:var(--ink);font-size:12px;font-weight:600;padding:5px 11px;border-radius:var(--full);box-shadow:var(--shadow);z-index:2}
+.skip-badge{position:absolute;bottom:12px;left:12px;background:rgba(193,53,21,.95);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:var(--full);z-index:2}
+.mediacount{position:absolute;bottom:12px;right:12px;z-index:2;background:rgba(34,34,34,.72);color:#fff;border-radius:var(--full);padding:4px 10px;font-size:11.5px;font-weight:600;display:flex;gap:8px;backdrop-filter:blur(4px)}
+.cbody{padding:12px 2px 4px}
+.crow{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ctitle{font-size:16px;font-weight:600;line-height:1.3;letter-spacing:-.01em}
+.crating{display:flex;align-items:center;gap:4px;font-size:14px;font-weight:500;color:var(--ink);flex-shrink:0}
+.crating svg{width:14px;height:14px;fill:var(--ink)}
+.cmeta{font-size:14px;color:var(--muted);margin-top:3px}
+.cdesc{font-size:14px;color:var(--muted);margin-top:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cfoot{margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.energy-mini{font-size:13px}
+.price-cue{font-size:14px;font-weight:600;color:var(--ink)}
+.card-actions{position:absolute;top:12px;left:12px;display:none;gap:6px;z-index:4}
+body.editing .card-actions{display:flex}
+body.editing .gf-badge{left:auto;right:52px;top:12px}
+.icobtn{width:32px;height:32px;border-radius:var(--full);border:none;background:var(--canvas);box-shadow:var(--shadow);font-size:13px;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.icobtn:hover{transform:scale(1.1)}
+.empty{color:var(--muted);font-size:14.5px;padding:8px 2px}
+
+/* ---------- detail modal ---------- */
+.detail-scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:center;z-index:120;padding:40px 20px;overflow-y:auto}
+.detail-scrim.open{display:flex}
+.detail{background:var(--canvas);border-radius:var(--md);max-width:800px;width:100%;overflow:hidden;box-shadow:var(--shadow-lift);animation:rise .3s ease}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.detail-hero{aspect-ratio:16/9;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--surface-strong)}
+.detail-hero .emoji-bg{font-size:110px;opacity:.9}
+.detail-hero img,.detail-hero video{width:100%;height:100%;object-fit:cover}
+.detail-closer{position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:var(--full);background:var(--canvas);box-shadow:var(--shadow);border:none;font-size:17px;display:flex;align-items:center;justify-content:center;z-index:5;transition:transform .2s}
+.detail-closer:hover{transform:scale(1.08)}
+.detail-fav{position:absolute;top:16px;right:16px;z-index:5}
+.detail-body{padding:26px 30px 30px}
+.detail-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:1px solid var(--hairline);padding-bottom:20px;margin-bottom:20px}
+.detail-top h2{font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
+.detail-sub{font-size:14px;color:var(--muted);margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.detail-sub .dot{color:var(--hairline)}
+.detail-rating{display:flex;align-items:center;gap:5px;font-size:15px;font-weight:600;white-space:nowrap}
+.detail-rating svg{width:16px;height:16px;fill:var(--ink)}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.d-chip{font-size:13px;font-weight:500;background:var(--surface-soft);border:1px solid var(--hairline);border-radius:var(--full);padding:7px 13px;color:var(--body)}
+.d-chip.skip{background:#fdeee9;border-color:#f3c9bd;color:var(--error);font-weight:600}
+.detail-desc{font-size:16px;color:var(--body);line-height:1.6;margin-bottom:8px}
+.dsec{margin-top:26px}
+.dsec-title{font-size:17px;font-weight:600;margin-bottom:14px;letter-spacing:-.01em}
+.quicklinks{display:flex;flex-wrap:wrap;gap:10px}
+.lnk{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;padding:11px 17px;border-radius:var(--sm);border:1px solid var(--ink);color:var(--ink);transition:background .18s}
+.lnk:hover{background:var(--surface-soft)}
+.lnk.maps{border-color:var(--ink)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.gitem{position:relative;border-radius:var(--md);overflow:hidden;aspect-ratio:1;background:var(--surface-strong);cursor:pointer;transition:transform .2s}
+.gitem:hover{transform:scale(1.02)}
+.gitem img,.gitem video{width:100%;height:100%;object-fit:cover}
+.gitem .play-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;background:rgba(0,0,0,.28);color:#fff}
+.gitem .gdel{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:var(--full);border:none;background:var(--canvas);box-shadow:var(--shadow);color:var(--error);font-size:12px;display:none;align-items:center;justify-content:center}
+body.editing .gitem .gdel{display:flex}
+.linkitem{display:flex;align-items:center;gap:12px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--md);padding:13px 16px;margin-bottom:10px;transition:box-shadow .18s}
+.linkitem:hover{box-shadow:var(--shadow)}
+.linkitem .li-ic{font-size:20px}
+.linkitem .li-txt{flex:1;min-width:0}
+.linkitem .li-cap{font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.linkitem .li-url{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.linkitem .li-del{width:28px;height:28px;border-radius:var(--full);border:none;background:var(--surface-soft);color:var(--error);font-size:13px;display:none}
+body.editing .linkitem .li-del{display:flex;align-items:center;justify-content:center}
+.addmedia{display:none;margin-top:16px;background:var(--surface-soft);border:1px solid var(--hairline);border-radius:var(--md);padding:18px}
+body.editing .addmedia{display:block}
+.am-tabs{display:flex;gap:8px;margin-bottom:14px}
+.am-tab{flex:1;background:var(--canvas);border:1px solid var(--hairline);color:var(--body);border-radius:var(--sm);padding:9px;font-weight:600;font-size:13.5px;transition:all .18s}
+.am-tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.am-drop{border:1.5px dashed var(--border-strong);border-radius:var(--sm);padding:22px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:11px;background:var(--canvas)}
+.am-drop:hover,.am-drop.drag{border-color:var(--rausch);background:#fff}
+.am-drop .e{font-size:26px;display:block;margin-bottom:6px}
+.am-drop .t{font-weight:600;font-size:14px}
+.am-drop .s{font-size:12.5px;color:var(--muted);margin-top:3px}
+.am-urlrow{display:flex;gap:8px;margin-top:9px}
+.am-urlrow input{flex:1;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--sm);color:var(--ink);padding:11px 13px;font-family:inherit;font-size:14px;outline:none}
+.am-urlrow input:focus{border-color:var(--ink);border-width:2px}
+.am-urlrow button{background:var(--ink);color:#fff;border:none;border-radius:var(--sm);padding:0 18px;font-weight:600;font-size:13.5px}
+.am-hint{font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.5}
+
+/* ---------- text modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:center;z-index:140;padding:40px 20px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:var(--canvas);border-radius:var(--md);max-width:580px;width:100%;padding:28px 30px;box-shadow:var(--shadow-lift);animation:rise .28s ease}
+.modal h3{font-size:22px;font-weight:600;margin-bottom:20px;letter-spacing:-.01em}
+.frow{margin-bottom:16px}
+.frow label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.frow input,.frow textarea,.frow select{width:100%;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--sm);color:var(--ink);padding:12px 14px;font-family:inherit;font-size:15px;outline:none;transition:border .18s}
+.frow input:focus,.frow textarea:focus,.frow select:focus{border-color:var(--ink);border-width:2px;padding:11px 13px}
+.frow textarea{min-height:88px;resize:vertical}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.mfoot{display:flex;justify-content:flex-end;gap:12px;margin-top:22px}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(90px);background:var(--ink);color:#fff;font-weight:600;font-size:14.5px;padding:14px 26px;border-radius:var(--sm);transition:transform .32s cubic-bezier(.2,.8,.2,1);z-index:200;box-shadow:var(--shadow-lift)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.vbox video{max-width:100%;max-height:80vh;border-radius:var(--md)}
+.vbox iframe{width:min(92vw,880px);aspect-ratio:16/9;border:none;border-radius:var(--md)}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:160;padding:20px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:94vw;max-height:90vh;border-radius:var(--sm)}
+
+/* ---------- picks panel ---------- */
+.picks-scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;justify-content:flex-end;z-index:130}
+.picks-scrim.open{display:flex}
+.picks{background:var(--canvas);width:min(460px,94vw);height:100%;overflow-y:auto;animation:slideL .32s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+@keyframes slideL{from{transform:translateX(100%)}to{transform:none}}
+.picks-head{padding:24px 26px 18px;border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--canvas)}
+.picks-head h3{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.picks-head .sub{font-size:13.5px;color:var(--muted);margin-top:2px}
+.picks-body{padding:18px 26px 30px}
+.pick-row{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid var(--hairline-soft);cursor:pointer;align-items:center}
+.pick-row:hover .pr-title{color:var(--rausch)}
+.pick-thumb{width:66px;height:66px;border-radius:var(--md);overflow:hidden;flex-shrink:0;background:var(--surface-strong);display:flex;align-items:center;justify-content:center;font-size:28px}
+.pick-thumb img,.pick-thumb video{width:100%;height:100%;object-fit:cover}
+.pr-txt{flex:1;min-width:0}
+.pr-city{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rausch)}
+.pr-title{font-size:15px;font-weight:600;line-height:1.3;margin-top:1px}
+.pr-meta{font-size:13px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:5px}
+.pr-meta svg{width:12px;height:12px;fill:var(--ink)}
+.pr-remove{border:none;background:var(--surface-soft);color:var(--muted);width:30px;height:30px;border-radius:var(--full);font-size:13px;flex-shrink:0}
+.pr-remove:hover{background:var(--surface-strong);color:var(--error)}
+.picks-empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.picks-empty .big{font-size:40px;margin-bottom:12px}
+
+footer{border-top:1px solid var(--hairline);margin-top:60px}
+.footer-in{max-width:1280px;margin:0 auto;padding:40px;color:var(--muted);font-size:14px}
+.footer-in b{color:var(--ink);font-weight:600}
+
+@media(max-width:900px){.wrap,.nav-in,.footer-in{padding-left:24px;padding-right:24px}.nav-tabs{display:none}}
+@media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:16px}.thumb .emoji-bg{font-size:52px}.detail-body{padding:22px}.f3{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav"><div class="nav-in">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 1c2.2 0 3.9 1.7 5.3 4.3l.5 1 6.3 13.4c.6 1.3.9 2.4.9 3.5 0 3.3-2.6 5.8-5.9 5.8-1.9 0-3.7-.9-5.2-2.6l-.9-1-1 1c-1.5 1.7-3.3 2.6-5.2 2.6C3.6 29 1 26.5 1 23.2c0-1.1.3-2.2.9-3.5L8.2 6.3l.5-1C10.1 2.7 11.8 1 16 1zm0 2.5c-1.5 0-2.6 1.2-3.8 3.5L11.7 8 5.4 21.3c-.4.9-.6 1.5-.6 2 0 1.9 1.4 3.2 3.2 3.2 1.2 0 2.4-.7 3.5-2l1.2-1.4-1-1.7c-.9-1.6-1.4-3-1.4-4.2 0-2.5 1.9-4.4 4.4-4.4s4.4 1.9 4.4 4.4c0 1.2-.5 2.6-1.4 4.2l-1 1.7 1.2 1.4c1.1 1.3 2.3 2 3.5 2 1.8 0 3.2-1.3 3.2-3.2 0-.5-.2-1.1-.6-2L20.3 8l-.5-1C18.6 4.7 17.5 3.5 16 3.5zm0 11c-1.1 0-1.9.8-1.9 1.9 0 .6.3 1.5.9 2.6l1 1.7 1-1.7c.6-1.1.9-2 .9-2.6 0-1.1-.8-1.9-1.9-1.9z"/></svg>
+    basecamp
+  </div>
+  <div class="nav-tabs" id="navTabs"></div>
+  <div class="nav-right">
+    <button class="picksbtn" id="picksBtn" onclick="openPicks()"><span class="heart">♥</span> Pilihan <span class="cnt" id="pickCount">0</span></button>
+    <button class="editbtn" id="editToggle">✏️ Edit</button>
+  </div>
+</div></nav>
+
+<main>
+<div class="wrap">
+  <section class="hero">
+    <div class="kicker">Sabtu 11 — Selasa 14 Juli 2026 · 4 hari 3 malam</div>
+    <h1>Kita pilih satu <span class="r">basecamp</span>, nikmati empat hari pelan-pelan.</h1>
+    <p>Pilih satu kota buat nginep full 4 hari. Tiap kota punya <b>banyak opsi aktivitas per tema</b> — ketuk kartu buat lihat detail, galeri foto/video, dan review. Suka satu tempat? Tap ♥ biar masuk daftar pilihan kita berdua. 🍓</p>
+  </section>
+
+  <div class="city-strip" id="cityStrip"></div>
+  <div class="lockbar" id="lockbar">
+    <span style="font-size:20px">🔒</span>
+    <div class="lb-txt" id="lockText"></div>
+    <button class="btn outline" onclick="unlockCity()">Ganti basecamp</button>
+  </div>
+
+  <section id="cityView"></section>
+</div>
+</main>
+
+<footer><div class="footer-in">
+  Ketuk kartu → detail, galeri & review · 📍 Maps · ▶ TikTok · ◉ IG buka pencarian terbaru · ♥ tersimpan ke daftar pilihan.<br><br>
+  Dibuat pelan-pelan, dengan sayang. 🤍 · <b>basecamp</b> — Bali 2026
+</div></footer>
+
+<!-- DETAIL MODAL -->
+<div class="detail-scrim" id="detailScrim" onclick="if(event.target===this)closeDetail()"><div class="detail" id="detail"></div></div>
+
+<!-- PICKS PANEL -->
+<div class="picks-scrim" id="picksScrim" onclick="if(event.target===this)closePicks()">
+  <aside class="picks">
+    <div class="picks-head">
+      <div><h3>♥ Pilihan Kita</h3><div class="sub" id="picksSub">Tempat-tempat favorit kalian</div></div>
+      <button class="detail-closer" style="position:static" onclick="closePicks()">✕</button>
+    </div>
+    <div class="picks-body" id="picksBody"></div>
+  </aside>
+</div>
+
+<!-- TEXT MODAL -->
+<div class="overlay" id="modalOverlay"><div class="modal">
+  <h3 id="modalTitle">Tambah aktivitas</h3>
+  <div class="f2">
+    <div class="frow"><label>Kota</label><select id="f_city"><option value="ubud">🎋 Ubud</option><option value="kintamani">🌋 Kintamani</option><option value="bedugul">🌫️ Bedugul</option><option value="tabanan">🌾 Tabanan</option></select></div>
+    <div class="frow"><label>Hari</label><select id="f_day"><option value="1">Sabtu 11</option><option value="2">Minggu 12</option><option value="3">Senin 13</option><option value="4">Selasa 14</option></select></div>
+  </div>
+  <div class="f3">
+    <div class="frow"><label>Tema</label><select id="f_theme"><option value="alam">🌿 Alam</option><option value="chill">🫧 Chill</option><option value="kuliner">🍜 Kuliner</option><option value="budaya">🛕 Budaya</option><option value="foto">📸 Foto</option><option value="romantis">💐 Romantis</option></select></div>
+    <div class="frow"><label>Tenaga</label><select id="f_energy"><option value="1">🍃 santai</option><option value="2">🍃🍃 sedang</option><option value="3">🍃🍃🍃 berat</option></select></div>
+    <div class="frow"><label>Rating</label><input type="number" id="f_rating" step="0.01" min="0" max="5" placeholder="4.8"></div>
+  </div>
+  <div class="frow"><label>Flag</label><select id="f_skip"><option value="0">✅ Aman</option><option value="1">⚠️ Skip dulu</option></select></div>
+  <div class="frow"><label>Judul</label><input type="text" id="f_title" placeholder="cth: Ngopi di AKASA depan Gunung Batur"></div>
+  <div class="frow"><label>Waktu</label><input type="text" id="f_time" placeholder="cth: Pagi–Siang"></div>
+  <div class="frow"><label>Deskripsi</label><textarea id="f_desc"></textarea></div>
+  <div class="f3">
+    <div class="frow"><label>Maps query</label><input type="text" id="f_maps"></div>
+    <div class="frow"><label>TikTok query</label><input type="text" id="f_tt"></div>
+    <div class="frow"><label>IG tag/handle</label><input type="text" id="f_ig"></div>
+  </div>
+  <div class="am-hint">📎 Foto/video/link ditambah dari dalam kartu (ketuk kartu setelah simpan).</div>
+  <div class="mfoot"><button class="btn outline" onclick="closeModal()">Batal</button><button class="btn primary" onclick="saveActivity()">Simpan</button></div>
+</div></div>
+
+<div class="overlay" id="videoOverlay" onclick="this.classList.remove('open');this.querySelector('.vbox').innerHTML=''"><div class="vbox" onclick="event.stopPropagation()"></div></div>
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open');this.innerHTML=''"></div>
+<input type="file" id="fileInput" style="display:none">
+<div class="toast" id="toast"></div>
+
+<script>
+const CITIES={
+  ubud:{emoji:"🎋",name:"Ubud",opt:"Opsi A",tag:"Spa & healing · hangat",intro:"Pilihan paling aman & paling <b>dimanja</b>: spa 5 menit, café sawah 10 menit, kalau capek kamar selalu dekat.",chips:["💆 Ibukota spa & healing","🍽️ Pilihan makanan terbanyak","🌡️ Hangat, tanpa jaket tebal","✈️ ±1,5 jam dari bandara"]},
+  kintamani:{emoji:"🌋",name:"Kintamani",opt:"Opsi B",tag:"View gunung · sejuk",intro:"Paling sinematik: cabin kaca menghadap Batur, <b>view epik dari kasur</b>. Malam sepi & dingin — dan justru itu poinnya.",chips:["🌋 Bangun tidur = view gunung","☕ Surga café viral","🧣 Sejuk 17–24°C","✈️ ±2 jam dari bandara"]},
+  bedugul:{emoji:"🌫️",name:"Bedugul",opt:"Opsi C",tag:"Danau & kabut · hening",intro:"Bali versi negeri dongeng: danau berkabut, pura mengapung, kebun stroberi. <b>Lambat itu fitur, bukan kekurangan</b>.",chips:["🌫️ Kabut pagi paling magis","💑 Paling hening & romantis","🧣 Paling dingin (±17°C)","✈️ ±2 jam dari bandara"]},
+  tabanan:{emoji:"🌾",name:"Tabanan",opt:"Opsi D",tag:"Pantai & sawah · deket bandara",intro:"Dark horse-nya: pantai hitam sepi + sawah UNESCO, <b>cuma ±45 menit dari bandara</b>. Waktu di jalan paling sedikit.",chips:["✈️ ±45 menit dari bandara!","🌾 Sawah UNESCO + pantai sepi","🔋 Paling hemat tenaga","🌊 Sunset Tanah Lot tiap sore"]},
+};
+const DAYS={1:"Sabtu 11",2:"Minggu 12",3:"Senin 13",4:"Selasa 14"};
+const DAYNAMES={
+  ubud:{1:"Mendarat & melambat",2:"Pool day & sawah",3:"Hari budaya (santai)",4:"Pulang pelan-pelan"},
+  kintamani:{1:"Naik ke atas awan",2:"Café hopping kaldera",3:"Desa, stroberi, danau",4:"Sunrise dari kasur"},
+  bedugul:{1:"Masuk ke dalam kabut",2:"Gerbang, bukit, stroberi",3:"Danau & taman",4:"Kabut terakhir"},
+  tabanan:{1:"Sampai cepat, santai lama",2:"Hari sawah UNESCO",3:"Royal garden & spa",4:"Sunset legendaris"},
+};
+const THEMES={alam:"🌿 Alam",chill:"🫧 Chill",kuliner:"🍜 Kuliner",budaya:"🛕 Budaya",foto:"📸 Foto",romantis:"💐 Romantis"};
+const TE={alam:"🌿",chill:"🫧",kuliner:"🍜",budaya:"🛕",foto:"📸",romantis:"💐"};
+const STAR=`<svg viewBox="0 0 32 32"><path d="M15.1 1.6c.3-.8 1.5-.8 1.8 0l3.7 9.1 9.8.7c.9.1 1.2 1.2.5 1.8l-7.5 6.3 2.4 9.5c.2.9-.8 1.6-1.5 1.1L16 24.7l-8.3 5.2c-.8.5-1.7-.2-1.5-1.1l2.4-9.5-7.5-6.3c-.7-.6-.3-1.7.5-1.8l9.8-.7 3.7-9.1z"/></svg>`;
+const HEART=`<svg viewBox="0 0 32 32"><path class="hf" d="M16 28c7-4.7 12-9.5 12-15 0-3.5-2.7-6-6-6-2.4 0-4.3 1.3-6 3.8C14.3 8.3 12.4 7 10 7c-3.3 0-6 2.5-6 6 0 5.5 5 10.3 12 15z"/></svg>`;
+
+let all=[],city="ubud",themeFilter="all",editing=false,editingId=null;
+let detailId=null,amKind="photo",lockedCity=null;
+
+const $=s=>document.querySelector(s);
+const esc=s=>(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+function leaves(n){let s="";for(let i=1;i<=3;i++)s+=`<span style="opacity:${i>n?.25:1}">🍃</span>`;return s}
+function mapsUrl(q){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q)}
+function ttUrl(q){return "https://www.tiktok.com/search?q="+encodeURIComponent(q)}
+function igUrl(t){t=(t||"").trim();return t.includes("_")||t.length>25?"https://www.instagram.com/"+t+"/":"https://www.instagram.com/explore/tags/"+t.replace(/\s+/g,"")+"/"}
+function ytEmbed(u){const m=(u||"").match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{6,})/);return m?"https://www.youtube.com/embed/"+m[1]:null}
+const isVidFile=u=>u&&/\.(mp4|webm|mov)(\?|$)/i.test(u);
+const firstPhoto=a=>(a.media||[]).find(m=>m.kind==="photo");
+const firstVidFile=a=>(a.media||[]).find(m=>m.kind==="video"&&isVidFile(m.url));
+const fmtRating=r=>r&&r>0?Number(r).toFixed(2):null;
+
+/* ---------- nav / city strip ---------- */
+function renderNav(){
+  $("#navTabs").innerHTML=Object.entries(CITIES).map(([k,c])=>{
+    if(lockedCity&&k!==lockedCity)return"";
+    return `<button class="nav-tab ${k===city?'active':''}" onclick="setCity('${k}')"><span class="e">${c.emoji}</span>${c.name}</button>`;
+  }).join("");
+}
+function renderCityStrip(){
+  $("#cityStrip").innerHTML=Object.entries(CITIES).map(([k,c])=>{
+    if(lockedCity&&k!==lockedCity)return"";
+    return `<button class="city-pick ${k===city?'active':''} ${lockedCity===k?'locked':''}" onclick="setCity('${k}')">
+      <span class="lockbadge">🔒 Basecamp kita</span>
+      <span class="emo">${c.emoji}</span>
+      <span class="opt">${c.opt}</span>
+      <span class="nm">${c.name}</span>
+      <span class="tag">${c.tag}</span>
+    </button>`;
+  }).join("");
+  $("#lockbar").classList.toggle("show",!!lockedCity);
+  if(lockedCity)$("#lockText").innerHTML=`Basecamp terkunci di <b>${CITIES[lockedCity].name}</b> — cuma nampilin itinerary ${CITIES[lockedCity].name}. Kota lain disembunyiin biar fokus.`;
+}
+function setCity(k){city=k;themeFilter="all";render();window.scrollTo({top:0,behavior:'smooth'})}
+
+async function lockCity(){
+  lockedCity=city;
+  await fetch("/api/settings/locked_city",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({value:city})});
+  toast(`🔒 Basecamp dikunci: ${CITIES[city].name}!`);render();window.scrollTo({top:0,behavior:'smooth'});
+}
+async function unlockCity(){
+  lockedCity=null;
+  await fetch("/api/settings/locked_city",{method:"DELETE"});
+  toast("Basecamp dibuka lagi 🔓");render();
+}
+
+/* ---------- main render ---------- */
+function render(){
+  renderNav();renderCityStrip();updatePickCount();
+  const c=CITIES[city],acts=all.filter(a=>a.city===city);
+  const counts={};for(const t in THEMES)counts[t]=acts.filter(a=>a.theme===t).length;
+  let html=`<div class="city-head"><span class="big">${c.emoji}</span><h2>${c.name}</h2>
+    <div class="lockcta">${lockedCity===city?'':`<button class="btn primary" onclick="lockCity()">🔒 Jadikan basecamp kita</button>`}</div></div>
+    <p class="city-intro">${c.intro}</p>
+    <div class="verdict">${c.chips.map(x=>`<span class="v-chip">${x}</span>`).join("")}</div>
+    <div class="tfilter"><button class="tf ${themeFilter==='all'?'active':''}" onclick="setTheme('all')">Semua <span class="tcount">${acts.length}</span></button>
+    ${Object.entries(THEMES).map(([k,v])=>`<button class="tf ${themeFilter===k?'active':''}" onclick="setTheme('${k}')">${v} <span class="tcount">${counts[k]}</span></button>`).join("")}</div>`;
+  for(let d=1;d<=4;d++){
+    const day=acts.filter(a=>a.day===d&&(themeFilter==="all"||a.theme===themeFilter));
+    html+=`<section class="day-sec"><div class="day-div"><span class="dn">Hari ${d}</span><span class="dt">${DAYS[d]} · ${DAYNAMES[city][d]}</span><span class="rule"></span><button class="addbtn" onclick="openCreate(${d})">＋ tambah</button></div>`;
+    html+=day.length===0?`<p class="empty">Belum ada aktivitas tema ini${editing?' — klik ＋ tambah':'.'}</p>`:`<div class="grid">`+day.map(cardHTML).join("")+`</div>`;
+    html+=`</section>`;
+  }
+  $("#cityView").innerHTML=html;
+}
+function setTheme(t){themeFilter=t;render()}
+
+function cardHTML(a){
+  const ph=firstPhoto(a),vf=firstVidFile(a);
+  const photos=(a.media||[]).filter(m=>m.kind==="photo").length;
+  const videos=(a.media||[]).filter(m=>m.kind==="video").length;
+  const links=(a.media||[]).filter(m=>m.kind==="link").length;
+  let media;
+  if(ph)media=`<img src="${esc(ph.url)}" loading="lazy" onerror="this.parentElement.classList.add('ph-${a.theme}');this.outerHTML='<span class=\\'emoji-bg\\'>${TE[a.theme]}</span>'">`;
+  else if(vf)media=`<video src="${esc(vf.url)}" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>`;
+  else media=`<span class="emoji-bg">${TE[a.theme]}</span>`;
+  const mc=[];if(photos)mc.push(`📷 ${photos}`);if(videos)mc.push(`🎬 ${videos}`);if(links)mc.push(`🔗 ${links}`);
+  const rating=fmtRating(a.rating);
+  return `<article class="card" onclick="openDetail(${a.id})">
+    <div class="thumb ${ph||vf?'':'ph-'+a.theme}">
+      ${media}
+      <span class="gf-badge">${THEMES[a.theme]}</span>
+      <button class="fav-btn ${a.favorite?'on':''}" title="Simpan ke pilihan" onclick="event.stopPropagation();toggleFav(${a.id})">${HEART}</button>
+      ${a.skip_flag?`<span class="skip-badge">⚠️ skip dulu</span>`:""}
+      ${mc.length?`<div class="mediacount">${mc.map(x=>`<span>${x}</span>`).join("")}</div>`:""}
+      <div class="card-actions">
+        <button class="icobtn" title="Edit" onclick="event.stopPropagation();openEdit(${a.id})">✏️</button>
+        <button class="icobtn" title="Hapus" onclick="event.stopPropagation();delActivity(${a.id})">🗑️</button>
+      </div>
+    </div>
+    <div class="cbody">
+      <div class="crow"><span class="ctitle">${esc(a.title)}</span>${rating?`<span class="crating">${STAR}${rating}</span>`:""}</div>
+      <div class="cmeta">${a.time_label?esc(a.time_label)+" · ":""}${DAYS[a.day]}</div>
+      <div class="cdesc">${esc(a.description)}</div>
+      <div class="cfoot"><span class="energy-mini">${leaves(a.energy)}</span></div>
+    </div>
+  </article>`;
+}
+
+/* ---------- favorites ---------- */
+async function toggleFav(id){
+  const r=await fetch(`/api/activities/${id}/favorite`,{method:"POST"});
+  if(r.ok){const j=await r.json();const a=all.find(x=>x.id===id);if(a)a.favorite=j.favorite;
+    render();if(detailId===id)openDetail(id);
+    toast(j.favorite?"♥ Ditambah ke pilihan!":"Dihapus dari pilihan")}
+}
+function updatePickCount(){$("#pickCount").textContent=all.filter(a=>a.favorite).length}
+function openPicks(){
+  const favs=all.filter(a=>a.favorite);
+  $("#picksSub").textContent=favs.length?`${favs.length} tempat favorit`:"Belum ada pilihan";
+  const body=$("#picksBody");
+  if(favs.length===0){body.innerHTML=`<div class="picks-empty"><div class="big">♡</div><div>Belum ada pilihan.<br>Tap ikon ♥ di kartu mana pun buat mulai daftar kalian.</div></div>`}
+  else{
+    // group by city
+    let html="";const byCity={};favs.forEach(a=>{(byCity[a.city]=byCity[a.city]||[]).push(a)});
+    for(const ck in byCity){
+      html+=`<div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:16px 0 6px">${CITIES[ck].emoji} ${CITIES[ck].name}</div>`;
+      html+=byCity[ck].map(a=>{
+        const ph=firstPhoto(a),vf=firstVidFile(a);
+        const th=ph?`<img src="${esc(ph.url)}">`:(vf?`<video src="${esc(vf.url)}" muted></video>`:TE[a.theme]);
+        const rating=fmtRating(a.rating);
+        return `<div class="pick-row" onclick="closePicks();setCity('${a.city}');setTimeout(()=>openDetail(${a.id}),300)">
+          <div class="pick-thumb">${th}</div>
+          <div class="pr-txt"><div class="pr-city">${DAYS[a.day]}</div><div class="pr-title">${esc(a.title)}</div>
+            <div class="pr-meta">${THEMES[a.theme]}${rating?` · ${STAR}${rating}`:""}</div></div>
+          <button class="pr-remove" onclick="event.stopPropagation();toggleFav(${a.id})">✕</button>
+        </div>`;
+      }).join("");
+    }
+    body.innerHTML=html;
+  }
+  $("#picksScrim").classList.add("open");
+}
+function closePicks(){$("#picksScrim").classList.remove("open")}
+
+/* ---------- detail ---------- */
+function openDetail(id){
+  detailId=id;const a=all.find(x=>x.id===id);if(!a)return;
+  const ph=firstPhoto(a),vf=firstVidFile(a);
+  let hero=ph?`<img src="${esc(ph.url)}" onerror="this.outerHTML='<span class=\\'emoji-bg\\'>${TE[a.theme]}</span>'">`:(vf?`<video src="${esc(vf.url)}" muted autoplay loop playsinline></video>`:`<span class="emoji-bg">${TE[a.theme]}</span>`);
+  const photos=(a.media||[]).filter(m=>m.kind==="photo");
+  const videos=(a.media||[]).filter(m=>m.kind==="video");
+  const links=(a.media||[]).filter(m=>m.kind==="link");
+  const rating=fmtRating(a.rating);
+  const quick=[];
+  if(a.maps_query)quick.push(`<a class="lnk maps" target="_blank" href="${mapsUrl(a.maps_query)}">📍 Google Maps</a>`);
+  if(a.tiktok_query)quick.push(`<a class="lnk" target="_blank" href="${ttUrl(a.tiktok_query)}">▶ TikTok</a>`);
+  if(a.ig_tag)quick.push(`<a class="lnk" target="_blank" href="${igUrl(a.ig_tag)}">◉ Instagram</a>`);
+  const photoGal=photos.length?`<div class="dsec"><div class="dsec-title">📷 Foto</div><div class="gallery">${photos.map(m=>`<div class="gitem" onclick="lightbox('${esc(m.url)}')"><img src="${esc(m.url)}" loading="lazy"><button class="gdel" onclick="event.stopPropagation();delMedia(${m.id})">✕</button></div>`).join("")}</div></div>`:"";
+  const vidGal=videos.length?`<div class="dsec"><div class="dsec-title">🎬 Video</div><div class="gallery">${videos.map(m=>{const yt=ytEmbed(m.url),vfile=isVidFile(m.url);const thumb=vfile?`<video src="${esc(m.url)}" muted></video>`:(yt?`<img src="https://img.youtube.com/vi/${yt.split('/embed/')[1]}/hqdefault.jpg">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--surface-strong)">${m.url.includes("tiktok")?"🎵":m.url.includes("instagram")?"📸":"🔗"}</div>`);return `<div class="gitem" onclick="playVideo('${esc(m.url)}')">${thumb}<div class="play-ov">▶</div><button class="gdel" onclick="event.stopPropagation();delMedia(${m.id})">✕</button></div>`}).join("")}</div></div>`:"";
+  const linkList=links.length?`<div class="dsec"><div class="dsec-title">🔗 Referensi & link</div>${links.map(m=>{const ic=m.url.includes("tiktok")?"🎵":m.url.includes("instagram")?"📸":m.url.includes("youtu")?"▶️":m.url.includes("maps")?"📍":"🔗";return `<a class="linkitem" href="${esc(m.url)}" target="_blank" onclick="event.stopPropagation()"><span class="li-ic">${ic}</span><div class="li-txt"><div class="li-cap">${esc(m.caption||"Link referensi")}</div><div class="li-url">${esc(m.url)}</div></div><button class="li-del" onclick="event.preventDefault();delMedia(${m.id})">✕</button></a>`}).join("")}</div>`:"";
+  const addZone=`<div class="addmedia"><div class="am-tabs"><button class="am-tab ${amKind==='photo'?'on':''}" onclick="setAmKind('photo')">📷 Foto</button><button class="am-tab ${amKind==='video'?'on':''}" onclick="setAmKind('video')">🎬 Video</button><button class="am-tab ${amKind==='link'?'on':''}" onclick="setAmKind('link')">🔗 Link</button></div><div id="amPanel"></div></div>`;
+
+  $("#detail").innerHTML=`
+    <div class="detail-hero">${hero}
+      <button class="detail-closer" onclick="closeDetail()">✕</button>
+      <button class="fav-btn detail-fav ${a.favorite?'on':''}" onclick="toggleFav(${a.id})">${HEART}</button>
+    </div>
+    <div class="detail-body">
+      <div class="detail-top">
+        <div><h2>${esc(a.title)}</h2>
+          <div class="detail-sub"><span>${THEMES[a.theme]}</span><span class="dot">·</span><span>${DAYS[a.day]}</span>${a.time_label?`<span class="dot">·</span><span>${esc(a.time_label)}</span>`:""}<span class="dot">·</span><span>Tenaga ${leaves(a.energy)}</span></div>
+        </div>
+        ${rating?`<div class="detail-rating">${STAR}${rating}</div>`:""}
+      </div>
+      <div class="chip-row">${a.skip_flag?`<span class="d-chip skip">⚠️ Skip dulu / cek dokter</span>`:""}<span class="d-chip">${CITIES[a.city].emoji} ${CITIES[a.city].name}</span></div>
+      <p class="detail-desc">${esc(a.description)}</p>
+      ${quick.length?`<div class="dsec"><div class="dsec-title">Buka cepat</div><div class="quicklinks">${quick.join("")}</div></div>`:""}
+      ${photoGal}${vidGal}${linkList}${addZone}
+    </div>`;
+  renderAmPanel();
+  $("#detailScrim").classList.add("open");
+}
+function closeDetail(){$("#detailScrim").classList.remove("open");detailId=null}
+function setAmKind(k){amKind=k;document.querySelectorAll('.am-tab').forEach((t,i)=>t.classList.toggle('on',['photo','video','link'][i]===k));renderAmPanel()}
+function renderAmPanel(){
+  const p=$("#amPanel");if(!p)return;
+  if(amKind==="link"){p.innerHTML=`<div class="am-urlrow"><input id="amCap" placeholder="Judul (opsional)" style="max-width:160px"><input id="amUrl" placeholder="Paste link apa aja..."><button onclick="addLink()">Tambah</button></div><div class="am-hint">Link TikTok/IG/YouTube/artikel — jadi daftar rapi di kartu ini.</div>`}
+  else{const label=amKind==="photo"?"foto":"video";p.innerHTML=`<div class="am-drop" id="amDrop" onclick="pickAm()"><span class="e">${amKind==="photo"?"📸":"🎥"}</span><div class="t">Ketuk / seret ${label} ke sini</div><div class="s">${amKind==="photo"?"JPG · PNG · WebP":"MP4 · WebM · MOV"}</div></div><div class="am-urlrow"><input id="amUrl" placeholder="atau paste URL ${label}..."><button onclick="addUrlMedia()">Tambah</button></div><div class="am-hint">${amKind==="photo"?"Copy image address dari Google/IG lalu paste.":"YouTube auto-thumbnail; mp4 upload diputar; TikTok/IG buka di app."}</div>`;setupAmDrop()}
+}
+async function addMedia(kind,url,caption=""){if(!url){toast("Isi dulu ya");return}const r=await fetch(`/api/activities/${detailId}/media`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind,url,caption})});if(r.ok){toast("Ditambahkan 📎");await reloadKeepDetail()}else toast("Gagal 😢")}
+function addUrlMedia(){addMedia(amKind,$("#amUrl").value.trim())}
+function addLink(){addMedia("link",$("#amUrl").value.trim(),$("#amCap").value.trim())}
+async function delMedia(mid){const r=await fetch("/api/media/"+mid,{method:"DELETE"});if(r.ok){toast("Media dihapus");await reloadKeepDetail()}}
+async function reloadKeepDetail(){const id=detailId;all=await(await fetch("/api/activities")).json();render();openDetail(id)}
+function pickAm(){const fi=$("#fileInput");fi.accept=amKind==="photo"?"image/*":"video/*";fi.value="";fi.click()}
+function setupAmDrop(){const el=$("#amDrop");if(!el)return;["dragover","dragenter"].forEach(ev=>el.addEventListener(ev,e=>{e.preventDefault();el.classList.add("drag")}));["dragleave","drop"].forEach(ev=>el.addEventListener(ev,e=>{e.preventDefault();el.classList.remove("drag")}));el.addEventListener("drop",async e=>{const f=e.dataTransfer.files[0];if(f)await uploadThen(f)})}
+async function uploadThen(f){toast("Mengupload... ⏳");const fd=new FormData();fd.append("file",f);const r=await fetch("/api/upload",{method:"POST",body:fd});if(r.ok){const j=await r.json();await addMedia(j.kind,j.url)}else toast("Upload gagal")}
+$("#fileInput").addEventListener("change",async e=>{const f=e.target.files[0];if(f)await uploadThen(f)});
+
+function playVideo(url){const box=$("#videoOverlay .vbox"),yt=ytEmbed(url);if(isVidFile(url)){box.innerHTML=`<video src="${esc(url)}" controls autoplay></video>`;$("#videoOverlay").classList.add("open")}else if(yt){box.innerHTML=`<iframe src="${yt}?autoplay=1" allow="autoplay; fullscreen"></iframe>`;$("#videoOverlay").classList.add("open")}else window.open(url,"_blank")}
+function lightbox(url){const lb=$("#lightbox");lb.innerHTML=`<img src="${esc(url)}">`;lb.classList.add("open")}
+
+/* ---------- CRUD ---------- */
+async function load(){
+  all=await(await fetch("/api/activities")).json();
+  const s=await(await fetch("/api/settings/locked_city")).json();
+  lockedCity=s.value||null;
+  if(lockedCity)city=lockedCity;
+  render();
+}
+function openCreate(day){editingId=null;$("#modalTitle").textContent="Tambah aktivitas";$("#f_city").value=city;$("#f_day").value=day;$("#f_theme").value=themeFilter==="all"?"chill":themeFilter;$("#f_energy").value="1";$("#f_skip").value="0";$("#f_rating").value="";["f_title","f_time","f_desc","f_maps","f_tt","f_ig"].forEach(id=>$("#"+id).value="");$("#modalOverlay").classList.add("open")}
+function openEdit(id){const a=all.find(x=>x.id===id);if(!a)return;editingId=id;$("#modalTitle").textContent="Edit aktivitas";$("#f_city").value=a.city;$("#f_day").value=a.day;$("#f_theme").value=a.theme;$("#f_energy").value=a.energy;$("#f_skip").value=a.skip_flag;$("#f_rating").value=a.rating||"";$("#f_title").value=a.title;$("#f_time").value=a.time_label;$("#f_desc").value=a.description;$("#f_maps").value=a.maps_query;$("#f_tt").value=a.tiktok_query;$("#f_ig").value=a.ig_tag;$("#modalOverlay").classList.add("open")}
+function closeModal(){$("#modalOverlay").classList.remove("open")}
+async function saveActivity(){
+  const cur=editingId?all.find(x=>x.id===editingId):{};
+  const body={city:$("#f_city").value,day:+$("#f_day").value,theme:$("#f_theme").value,title:$("#f_title").value.trim(),time_label:$("#f_time").value.trim(),energy:+$("#f_energy").value,skip_flag:+$("#f_skip").value,description:$("#f_desc").value.trim(),maps_query:$("#f_maps").value.trim(),tiktok_query:$("#f_tt").value.trim(),ig_tag:$("#f_ig").value.trim(),rating:parseFloat($("#f_rating").value)||0,favorite:cur.favorite||0,sort:cur.sort||0};
+  if(!body.title){toast("Judul wajib diisi");return}
+  const url=editingId?"/api/activities/"+editingId:"/api/activities";
+  const r=await fetch(url,{method:editingId?"PUT":"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  if(r.ok){closeModal();toast(editingId?"Tersimpan":"Ditambahkan");await load()}else toast("Gagal")
+}
+async function delActivity(id){const a=all.find(x=>x.id===id);if(!confirm(`Hapus "${a?a.title:''}"?`))return;const r=await fetch("/api/activities/"+id,{method:"DELETE"});if(r.ok){toast("Dihapus");await load()}}
+
+$("#editToggle").addEventListener("click",()=>{editing=!editing;document.body.classList.toggle("editing",editing);const b=$("#editToggle");b.classList.toggle("on",editing);b.textContent=editing?"✓ Selesai edit":"✏️ Edit"});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDetail();closeModal();closePicks();$("#videoOverlay").classList.remove("open");$("#lightbox").classList.remove("open")}});
+
+load();
+</script>
+</body>
+</html>
